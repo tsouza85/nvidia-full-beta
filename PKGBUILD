@@ -1,5 +1,4 @@
-# Maintainer : Daniel Bermond < gmail-com: danielbermond >
-# Contributor: Det <nimetonmaili g-mail>
+# Maintainer : Tiago Souza < gmail-com: tiago.souza >
 
 pkgbase=nvidia-full-beta
 pkgname=('nvidia-full-beta'
@@ -14,7 +13,7 @@ pkgdesc="Full NVIDIA driver package for Arch's official 'linux' package (drivers
 arch=('x86_64')
 url='https://www.nvidia.com/'
 license=('custom')
-makedepends=('linux' 'linux-headers')
+makedepends=('linux-clear' 'linux-clear-headers')
 options=('!strip')
 _pkg="NVIDIA-Linux-${CARCH}-${pkgver}"
 source=("https://us.download.nvidia.com/XFree86/Linux-${CARCH}/${pkgver}/${_pkg}.run"
@@ -28,7 +27,7 @@ sha256sums=('5f98e7af0643aea8c5538128bfef2f70dab0cd2559c97d0a8598210a3761c32b'
             'c961006882afb691410c017c239e2c2ef61badb88f15735d37112b513ef0a99d'
             '633bf69c39b8f35d0e64062eb0365c9427c2191583f2daa20b14e51772e8423a')
 
-_extramodules='extramodules-ARCH'
+_extramodules='-clear'
 
 # create soname links
 _create_links() {
@@ -58,8 +57,8 @@ prepare() {
 }
 
 build() {
-    printf '%s\n' "  -> Building Nvidia module for $(</usr/src/linux/version)..."
-    make -C "${_pkg}/kernel" SYSSRC='/usr/src/linux' module
+    printf '%s\n' "  -> Building Nvidia module for $(</usr/src/linux-clear/version)..."
+    make -C "${_pkg}/kernel" SYSSRC='/usr/src/linux-clear' module
 }
 
 package_nvidia-full-beta() {
@@ -68,7 +67,7 @@ package_nvidia-full-beta() {
     conflicts=('nvidia')
     
     local _extradir
-     _extradir="/usr/lib/modules/$(</usr/src/linux/version)/extramodules"
+     _extradir="/usr/lib/modules/$(</usr/src/linux-clear/version)/extramodules"
     
     install -D -m644 "${_pkg}/kernel/"nvidia{,-drm,-modeset,-uvm}.ko -t "${pkgdir}${_extradir}"
     
